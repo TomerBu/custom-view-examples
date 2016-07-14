@@ -1,4 +1,4 @@
-package com.example.customview;
+package com.example.customview.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -9,6 +9,8 @@ import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.example.customview.R;
 
 /**
  * TODO: document your custom view class.
@@ -27,6 +29,40 @@ public class ButtonView extends View {
         super(context);
         init(null, 0);
     }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        //Get the width measurement
+        //we send the width we want with the spec,
+        //if the parent allows (wrap_content) we get that width,
+        //otherwise, we need to settle on a lower width...
+        int widthSize = View.resolveSize(getDesiredWidth(), widthMeasureSpec);
+        //for more explanation see the example class MeasureUtils, which does a similar job (simplified)
+
+
+        //Get the height measurement
+        int heightSize = View.resolveSize(getDesiredHeight(), heightMeasureSpec);
+
+        //MUST call this to store the measurements
+        setMeasuredDimension(widthSize, heightSize);
+    }
+
+    private int getDesiredHeight() {
+        int height = 0;
+        if (mExampleDrawable != null) height = mExampleDrawable.getIntrinsicHeight();
+
+        //we calculate the height the control wants to be in,
+        //if we had more inner components we might have summed all their heights.
+        return height;
+
+    }
+
+    private int getDesiredWidth() {
+        int leftWidth = 0;
+        if (mExampleDrawable != null) leftWidth = mExampleDrawable.getIntrinsicWidth();
+        return leftWidth;
+    }
+
 
     private void init(AttributeSet attrs, int defStyle) {
         // Load attributes
